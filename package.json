@@ -1,6 +1,6 @@
 {
   "name": "ws-alert-vue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wildstream Custom Alert Vue Component",
   "main": "./index.js",
   "types": "./index.d.ts",
