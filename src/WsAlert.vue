@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import {Alerts, closeAlert} from "../";
+import {Alerts, closeAlert} from "../index";
 
 export default {
   name: "WsAlert",
