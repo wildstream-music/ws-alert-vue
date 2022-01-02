@@ -1,5 +1,5 @@
-import {inject} from "vue";
-import {nanoid} from "nanoid";
+import { inject, reactive } from "vue";
+import { nanoid } from "nanoid";
 
 // Export WS alert type
 export type WS_Alert = {
@@ -10,26 +10,34 @@ export type WS_Alert = {
     timeout?: number | false;
 };
 
+const WS_ALERTS = reactive<WS_Alert[]>([]);
+
+function $closeAlert(id: string, alerts: WS_Alert[]) {
+    const index = alerts.findIndex((a) => a.id === id);
+    if (index > -1) alerts.splice(index, 1);
+}
+
 // Inject alerts
 export function injectWsAlerts() {
     return inject<WS_Alert[]>("WS_ALERTS")!;
+}
+
+// Get alerts
+export function getWsAlerts() {
+    return WS_ALERTS;
 }
 
 // Use WS alerts
 export function useWsAlerts() {
     const WS_ALERTS = injectWsAlerts();
 
-    function closeAlert(id: string) {
-        const index = WS_ALERTS.findIndex((a) => a.id === id);
-        if (index > -1) WS_ALERTS.splice(index, 1);
-    }
-
-    return {closeAlert, WS_ALERTS}
+    return {
+        WS_ALERTS,
+        closeAlert: (id: string) => $closeAlert(id, WS_ALERTS)
+    };
 }
 
 function alert(data: Omit<WS_Alert, "id">) {
-    const {WS_ALERTS, closeAlert} = useWsAlerts();
-
     const newAlert = {
         id: nanoid(5),
         timeout: 5000,
@@ -47,7 +55,7 @@ function alert(data: Omit<WS_Alert, "id">) {
     WS_ALERTS.push(newAlert);
 
     if (newAlert.timeout) {
-        setTimeout(() => closeAlert(newAlert.id), newAlert.timeout);
+        setTimeout(() => $closeAlert(newAlert.id, WS_ALERTS), newAlert.timeout);
     }
 }
 
