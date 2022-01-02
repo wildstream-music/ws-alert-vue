@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import {Alerts, closeAlert} from "../index";
+import {closeAlert, injectWsAlerts} from "../index";
 
 export default {
   name: "WsAlert",
   setup() {
-    return {Alerts, closeAlert};
+    return {Alerts: injectWsAlerts(), closeAlert};
   }
 };
 </script>
