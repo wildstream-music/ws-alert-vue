@@ -1,8 +1,8 @@
 <template>
   <div class="ws-alert-container">
     <transition-group
-      enter-active-class="animate__animated animate__fadeInUp animate__fast"
-      leave-active-class="animate__animated animate__fadeOutUp animate__faster"
+        enter-active-class="animate__animated animate__fadeInUp animate__fast"
+        leave-active-class="animate__animated animate__fadeOutUp animate__faster"
     >
       <template v-for="a in Alerts" :key="a.id">
         <div class="ws-alert" :class="a.type">
@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import { Alerts, closeAlert } from "./index";
+import {Alerts, closeAlert} from "../";
 
 export default {
   name: "WsAlert",
   setup() {
-    return { Alerts, closeAlert };
+    return {Alerts, closeAlert};
   }
 };
 </script>
