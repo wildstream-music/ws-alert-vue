@@ -13,14 +13,19 @@ export function injectWsAlerts() {
     return inject<WS_Alert[]>("WS_ALERTS")!;
 }
 
-export function closeAlert(id: string) {
+export function useWsAlerts() {
     const WS_ALERTS = injectWsAlerts();
-    const index = WS_ALERTS.findIndex((a) => a.id === id);
-    if (index > -1) WS_ALERTS.splice(index, 1);
+
+    function closeAlert(id: string) {
+        const index = WS_ALERTS.findIndex((a) => a.id === id);
+        if (index > -1) WS_ALERTS.splice(index, 1);
+    }
+
+    return {closeAlert, WS_ALERTS}
 }
 
 function alert(data: Omit<WS_Alert, "id">) {
-    const WS_ALERTS = injectWsAlerts();
+    const {WS_ALERTS, closeAlert} = useWsAlerts();
 
     const newAlert = {
         id: nanoid(5),

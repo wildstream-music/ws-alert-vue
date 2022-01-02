@@ -4,7 +4,7 @@
         enter-active-class="animate__animated animate__fadeInUp animate__fast"
         leave-active-class="animate__animated animate__fadeOutUp animate__faster"
     >
-      <template v-for="a in Alerts" :key="a.id">
+      <template v-for="a in WS_ALERTS" :key="a.id">
         <div class="ws-alert" :class="a.type">
           <div class="ws-alert-icon">
             <i :class="a.icon"></i>
@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import {closeAlert, injectWsAlerts} from "../index";
+import {useWsAlerts} from "../index";
 
 export default {
   name: "WsAlert",
   setup() {
-    return {Alerts: injectWsAlerts(), closeAlert};
+    return useWsAlerts();
   }
 };
 </script>
