@@ -1,6 +1,7 @@
 import {inject} from "vue";
 import {nanoid} from "nanoid";
 
+// Export WS alert type
 export type WS_Alert = {
     id: string;
     type: string;
@@ -9,10 +10,12 @@ export type WS_Alert = {
     timeout?: number | false;
 };
 
+// Inject alerts
 export function injectWsAlerts() {
     return inject<WS_Alert[]>("WS_ALERTS")!;
 }
 
+// Use WS alerts
 export function useWsAlerts() {
     const WS_ALERTS = injectWsAlerts();
 
