@@ -9,6 +9,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "prepublishOnly": "npm run build",
     "build-sass": "npx sass src/tailwind-input.scss src/tailwind-input.css",
     "build-tailwind": "npx tailwindcss -i src/tailwind-input.css -o src/tailwind.css",
     "build-typescript": "npx tsc",
