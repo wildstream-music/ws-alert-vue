@@ -37,12 +37,12 @@ export function useWsAlerts() {
     };
 }
 
-function alert(data: Omit<WS_Alert, "id">) {
-    const newAlert = {
-        id: nanoid(5),
-        timeout: 5000,
-        ...data
-    };
+function alert(data: Omit<WS_Alert, "id"> & { id?: string }) {
+    if (!data.hasOwnProperty("id")) {
+        data.id = nanoid(5);
+    }
+
+    const newAlert = Object.assign({ timeout: 5000 }, data) as WS_Alert;
 
     if (WS_ALERTS.length) {
         const findAlert = WS_ALERTS.findIndex((a) => {
@@ -52,7 +52,7 @@ function alert(data: Omit<WS_Alert, "id">) {
         if (findAlert > -1) return;
     }
 
-    WS_ALERTS.push(newAlert);
+    WS_ALERTS.push(newAlert as WS_Alert);
 
     if (newAlert.timeout) {
         setTimeout(() => $closeAlert(newAlert.id, WS_ALERTS), newAlert.timeout);
@@ -60,44 +60,59 @@ function alert(data: Omit<WS_Alert, "id">) {
 }
 
 export const $alert = {
-    success(message: string, options?: WS_Alert) {
-        alert({
-            type: "success",
-            icon: "fa fa-check-circle",
-            message,
-            ...(options || {})
-        });
+    success(message: string, options?: Partial<WS_Alert>) {
+        alert(
+            Object.assign(
+                {
+                    type: "success",
+                    icon: "fa fa-check-circle",
+                    message
+                },
+                options || {}
+            )
+        );
         return this;
     },
 
-    info(message: string, options?: WS_Alert) {
-        alert({
-            type: "info",
-            icon: "fa fa-info-circle",
-            message,
-            ...(options || {})
-        });
+    info(message: string, options?: Partial<WS_Alert>) {
+        alert(
+            Object.assign(
+                {
+                    type: "info",
+                    icon: "fa fa-info-circle",
+                    message
+                },
+                options || {}
+            )
+        );
         return this;
     },
 
-    warning(message: string, options?: WS_Alert) {
-        alert({
-            type: "warning",
-            icon: "fa fa-exclamation-triangle",
-            message,
-            ...(options || {})
-        });
-
+    warning(message: string, options?: Partial<WS_Alert>) {
+        alert(
+            Object.assign(
+                {
+                    type: "warning",
+                    icon: "fa fa-exclamation-triangle",
+                    message
+                },
+                options || {}
+            )
+        );
         return this;
     },
 
-    error(message: string, options?: WS_Alert) {
-        alert({
-            type: "error",
-            icon: "fa fa-bomb",
-            message,
-            ...(options || {})
-        });
+    error(message: string, options?: Partial<WS_Alert>) {
+        alert(
+            Object.assign(
+                {
+                    type: "error",
+                    icon: "fa fa-bomb",
+                    message
+                },
+                options || {}
+            )
+        );
         return this;
     }
 };
